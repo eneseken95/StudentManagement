@@ -1,7 +1,7 @@
 # Information Management System
 ## StudentManagement
 
-<img src="https://github.com/eneseken95/Information_Management_System/blob/main/StudentManagement/Assets.xcassets/AppIcon.appiconset/1024%201.png?raw=true" alt="Logo" width="150" height="150" />
+<img src="https://github.com/eneseken95/Information_Management_System/blob/main/StudentManagement/Assets.xcassets/AppIcon.appiconset/1024%201.png?raw=true" alt="Logo" width="120" height="120" />
 
 ### App Name: BYS
 #### İcon Resources: https://www.freepik.com
