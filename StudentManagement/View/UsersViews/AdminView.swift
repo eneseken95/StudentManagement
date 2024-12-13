@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct AdminView: View {
+    
+    var userName: String
     var onDismiss: () -> Void
 
     var body: some View {
@@ -18,6 +20,11 @@ struct AdminView: View {
                 Text("Admin View")
                     .font(.largeTitle)
                     .foregroundColor(.green)
+
+                Text("Welcome, \(userName)!")
+                    .font(.title)
+                    .foregroundColor(.white)
+                    .padding()
 
                 Button("Çıkış yap") {
                     onDismiss()
@@ -34,7 +41,7 @@ struct AdminView: View {
 }
 
 #Preview {
-    AdminView(onDismiss: {
+    AdminView(userName: "AyseDemir", onDismiss: {
         print("Çıkış yapıldı")
     })
 }

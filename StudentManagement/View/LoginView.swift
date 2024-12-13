@@ -14,7 +14,7 @@ struct LoginView: View {
     @State private var shouldNavigate = false
     @State private var retryMessage: String?
     @State private var selectedRole: Role = .student
-    @ObservedObject var viewModel = LoginViewModel()
+    @ObservedObject var viewModel = ViewModels()
 
     var body: some View {
         NavigationStack {
@@ -133,7 +133,6 @@ struct LoginView: View {
                     if let loginData = viewModel.loginData {
                         switch loginData.role {
                         case .student:
-
                             if selectedRole == .student {
                                 shouldNavigate = true
                                 retryMessage = nil
@@ -141,7 +140,6 @@ struct LoginView: View {
                                 retryMessage = "Öğrenci rolüyle giriş yapmalısınız"
                             }
                         case .teacher:
-
                             if selectedRole == .teacher {
                                 shouldNavigate = true
                                 retryMessage = nil
@@ -149,7 +147,6 @@ struct LoginView: View {
                                 retryMessage = "Personel rolüyle giriş yapmalısınız."
                             }
                         case .admin:
-
                             if selectedRole == .teacher {
                                 shouldNavigate = true
                                 retryMessage = nil
@@ -190,15 +187,15 @@ struct LoginView: View {
 
         switch role {
         case .student:
-            return AnyView(StudentView(onDismiss: {
+            return AnyView(StudentView(userName: userName, onDismiss: {
                 resetState()
-            }))
+            }, viewModel: viewModel))
         case .teacher:
-            return AnyView(TeacherView(onDismiss: {
+            return AnyView(TeacherView(userName: userName, onDismiss: {
                 resetState()
-            }))
+            }, viewModel: viewModel))
         case .admin:
-            return AnyView(AdminView(onDismiss: {
+            return AnyView(AdminView(userName: userName, onDismiss: {
                 resetState()
             }))
         }

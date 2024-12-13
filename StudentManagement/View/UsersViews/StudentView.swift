@@ -8,7 +8,10 @@
 import SwiftUI
 
 struct StudentView: View {
+    
+    var userName: String
     var onDismiss: () -> Void
+    @ObservedObject var viewModel: ViewModels
 
     var body: some View {
         ZStack {
@@ -18,6 +21,29 @@ struct StudentView: View {
                 Text("Student View")
                     .font(.largeTitle)
                     .foregroundColor(.green)
+
+                Text("Welcome, \(userName)!")
+                    .font(.title)
+                    .foregroundColor(.white)
+                    .padding()
+
+                VStack {
+                    if let lessons = viewModel.lessonsData?.data, !lessons.isEmpty {
+                        List(lessons) { lesson in
+                            VStack(alignment: .leading) {
+                                Text(lesson.lesson)
+                                    .font(.headline)
+                                Text(lesson.isMandatory ? "Zorunlu Ders" : "Seçmeli Ders")
+                                    .font(.subheadline)
+                                    .foregroundColor(.gray)
+                            }
+                        }
+                    } else {
+                        Text("Ders bulunamadı")
+                            .foregroundColor(.white)
+                    }
+                }
+                .padding()
 
                 Button("Çıkış yap") {
                     onDismiss()
@@ -30,11 +56,14 @@ struct StudentView: View {
         }
         .navigationBarBackButtonHidden(true)
         .statusBarHidden()
+        .onAppear {
+            viewModel.fetchLessonsStudents(for: userName)
+        }
     }
 }
 
 #Preview {
-    StudentView(onDismiss: {
+    StudentView(userName: "AhmetYilmaz", onDismiss: {
         print("Çıkış yapıldı")
-    })
+    }, viewModel: ViewModels())
 }

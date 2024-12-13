@@ -8,15 +8,42 @@
 import SwiftUI
 
 struct TeacherView: View {
+    
+    var userName: String
     var onDismiss: () -> Void
+    @ObservedObject var viewModel: ViewModels
 
     var body: some View {
         ZStack {
-            Color.black.edgesIgnoringSafeArea(.all)
+            Color.black.ignoresSafeArea()
+
             VStack {
                 Text("Teacher View")
                     .font(.largeTitle)
                     .foregroundColor(.green)
+
+                Text("Welcome, \(userName)!")
+                    .font(.title)
+                    .foregroundColor(.white)
+                    .padding()
+
+                VStack {
+                    if let lessons = viewModel.lessonsData?.data, !lessons.isEmpty {
+                        List(lessons) { lesson in
+                            VStack(alignment: .leading) {
+                                Text(lesson.lesson)
+                                    .font(.headline)
+                                Text(lesson.isMandatory ? "Zorunlu Ders" : "Seçmeli Ders")
+                                    .font(.subheadline)
+                                    .foregroundColor(.gray)
+                            }
+                        }
+                    } else {
+                        Text("Ders bulunamadı")
+                            .foregroundColor(.white)
+                    }
+                }
+                .padding()
 
                 Button("Çıkış yap") {
                     onDismiss()
@@ -28,12 +55,15 @@ struct TeacherView: View {
             }
         }
         .navigationBarBackButtonHidden(true)
-        .statusBarHidden()
+        .statusBarHidden(true)
+        .onAppear {
+            viewModel.fetchLessonsTeacher(for: userName)
+        }
     }
 }
 
 #Preview {
-    TeacherView(onDismiss: {
+    TeacherView(userName: "MehmetKara", onDismiss: {
         print("Çıkış yapıldı")
-    })
+    }, viewModel: ViewModels())
 }

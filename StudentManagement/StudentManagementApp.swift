@@ -11,7 +11,7 @@ import SwiftUI
 struct StudentManagementApp: App {
     var body: some Scene {
         WindowGroup {
-            LoginView().environmentObject(LoginViewModel())
+            LoginView().environmentObject(ViewModels())
         }
     }
 }

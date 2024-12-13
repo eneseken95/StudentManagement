@@ -72,6 +72,90 @@ app.post('/login', (req, res) => {
 });
 
 
+app.get('/login/teachers', (req, res) => {
+    const { userName } = req.query;
+
+    if (!userName) {
+        return res.status(400).send({
+            error: true,
+            message: "userName is required"
+        });
+    }
+
+    conn.query(
+        `SELECT lesson, isMandatory FROM Teachers WHERE userName = ?`, [userName],
+        (lessonError, lessonResults) => {
+            if (lessonError) {
+                return res.status(500).send({
+                    error: true,
+                    message: "Error fetching teacher lessons"
+                });
+            }
+
+            if (lessonResults.length === 0) {
+                return res.status(404).send({
+                    error: true,
+                    message: "No lessons found"
+                });
+            }
+
+            let lessons = lessonResults.map(row => ({
+                lesson: row.lesson,
+                isMandatory: row.isMandatory
+            }));
+
+            return res.json({
+                error: false,
+                message: "Lessons fetched successfully",
+                data: lessons
+            });
+        }
+    );
+});
+
+
+app.get('/login/students', (req, res) => {
+    const { userName } = req.query;
+
+    if (!userName) {
+        return res.status(400).send({
+            error: true,
+            message: "userName is required"
+        });
+    }
+
+    conn.query(
+        `SELECT lesson, isMandatory FROM Students WHERE userName = ?`, [userName],
+        (lessonError, lessonResults) => {
+            if (lessonError) {
+                return res.status(500).send({
+                    error: true,
+                    message: "Error fetching teacher lessons"
+                });
+            }
+
+            if (lessonResults.length === 0) {
+                return res.status(404).send({
+                    error: true,
+                    message: "No lessons found"
+                });
+            }
+
+            let lessons = lessonResults.map(row => ({
+                lesson: row.lesson,
+                isMandatory: row.isMandatory
+            }));
+
+            return res.json({
+                error: false,
+                message: "Lessons fetched successfully",
+                data: lessons
+            });
+        }
+    );
+});
+
+
 app.listen(port, () => {
     console.log("Listening on port %d", port);
 })
