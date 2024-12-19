@@ -15,17 +15,27 @@ struct TeacherView: View {
 
     var body: some View {
         ZStack {
-            Color.black.ignoresSafeArea()
+            LinearGradient(gradient: Gradient(colors: [Color.purple.opacity(0.8), Color.blue.opacity(0.7)]), startPoint: .top, endPoint: .bottom)
+                .edgesIgnoringSafeArea(.all)
 
             VStack {
-                Text("Teacher View")
-                    .font(.largeTitle)
-                    .foregroundColor(.green)
+                Image("TeacherImage")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 88, height: 88)
+                    .cornerRadius(10)
 
-                Text("Welcome, \(userName)!")
-                    .font(.title)
+                Text("Öğretmen Sayfası")
+                    .font(.largeTitle)
+                    .fontWeight(.bold)
                     .foregroundColor(.white)
-                    .padding()
+                    .padding(.bottom, 10)
+
+                Text("Hoşgeldin, \(userName)")
+                    .font(.title2)
+                    .foregroundColor(.white)
+                    .fontWeight(.bold)
+                    .padding(.top, 10)
 
                 VStack {
                     if let lessons = viewModel.lessonsData?.data, !lessons.isEmpty {
@@ -33,26 +43,49 @@ struct TeacherView: View {
                             VStack(alignment: .leading) {
                                 Text(lesson.lesson)
                                     .font(.headline)
+                                    .foregroundColor(.black)
                                 Text(lesson.isMandatory ? "Zorunlu Ders" : "Seçmeli Ders")
                                     .font(.subheadline)
                                     .foregroundColor(.gray)
                             }
+                            .padding(.vertical, 5)
+                            .background(Color.clear)
+                            .cornerRadius(8)
+                            .listRowBackground(Color.white)
                         }
+                        .listStyle(PlainListStyle())
+                        .frame(height: 350)
+                        .background(Color.white)
+                        .cornerRadius(10)
+                        .padding(.horizontal, 15)
                     } else {
                         Text("Ders bulunamadı")
                             .foregroundColor(.white)
+                            .italic()
                     }
                 }
                 .padding()
 
-                Button("Çıkış yap") {
-                    onDismiss()
+                Button(action: {
+                    withAnimation {
+                        onDismiss()
+                    }
+                }) {
+                    Text("Çıkış Yap")
+                        .font(.title3)
+                        .fontWeight(.semibold)
+                        .foregroundColor(.white)
+                        .frame(width: 150, height: 55)
+                        .background(Color.orange)
+                        .cornerRadius(12)
+                        .shadow(radius: 10)
+                        .padding(.horizontal, 20)
                 }
-                .padding()
-                .background(Color.blue)
-                .foregroundColor(.white)
-                .cornerRadius(10)
+                .padding(.top, 20)
+
+                Spacer()
             }
+            .padding(.top, 25)
         }
         .navigationBarBackButtonHidden(true)
         .statusBarHidden(true)

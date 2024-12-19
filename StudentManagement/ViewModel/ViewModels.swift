@@ -135,6 +135,55 @@ class ViewModels: ObservableObject {
             .store(in: &cancellables)
     }
 
+    func updateLessonMandatory(userName: String, lesson: String, isMandatory: Bool, completion: @escaping (Bool) -> Void) {
+        let url = URL(string: "\(prefixUrl)/login/students/elective/lessons")!
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
+        let parameters: [String: Any] = [
+            "userName": userName,
+            "lesson": lesson,
+            "isMandatory": isMandatory,
+        ]
+
+        do {
+            request.httpBody = try JSONSerialization.data(withJSONObject: parameters, options: [])
+        } catch {
+            print("Error encoding data: \(error)")
+            completion(false)
+            return
+        }
+
+        URLSession.shared.dataTask(with: request) { data, _, error in
+            if let error = error {
+                print("Error updating lesson: \(error.localizedDescription)")
+                completion(false)
+                return
+            }
+
+            guard let data = data else {
+                print("No data received")
+                completion(false)
+                return
+            }
+
+            do {
+                let responseJSON = try JSONSerialization.jsonObject(with: data, options: [])
+                if let responseDict = responseJSON as? [String: Any], let success = responseDict["error"] as? Bool, !success {
+                    print("Lesson updated successfully")
+                    completion(true)
+                } else {
+                    print("Failed to update lesson")
+                    completion(false)
+                }
+            } catch {
+                print("Error decoding response: \(error.localizedDescription)")
+                completion(false)
+            }
+        }.resume()
+    }
+
     func reset() {
         loginData = nil
         errorMessage = nil

@@ -14,7 +14,20 @@ const getLessonsForRole = (userName, table, callback) => {
     });
 };
 
+const updateLesson = (userName, lesson, isMandatory, callback) => {
+    const query = `
+        UPDATE Students 
+        SET isMandatory = ? 
+        WHERE userName = ? AND lesson = ?
+    `;
+
+    conn.query(query, [isMandatory, userName, lesson], (error, results) => {
+        callback(error, results);
+    });
+};
+
 module.exports = {
     authenticateUser,
-    getLessonsForRole
+    getLessonsForRole,
+    updateLesson
 };

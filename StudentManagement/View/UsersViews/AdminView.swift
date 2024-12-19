@@ -14,29 +14,53 @@ struct AdminView: View {
 
     var body: some View {
         ZStack {
-            Color.black.edgesIgnoringSafeArea(.all)
+            LinearGradient(gradient: Gradient(colors: [Color.blue.opacity(0.8), Color.purple.opacity(0.8)]), startPoint: .top, endPoint: .bottom)
+                .edgesIgnoringSafeArea(.all)
 
             VStack {
-                Text("Admin View")
+                Spacer()
+
+                Image("TeacherImage")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 90, height: 90)
+                    .cornerRadius(10)
+
+                Text("Yönetici Sayfası")
                     .font(.largeTitle)
-                    .foregroundColor(.green)
-
-                Text("Welcome, \(userName)!")
-                    .font(.title)
+                    .fontWeight(.bold)
                     .foregroundColor(.white)
-                    .padding()
+                    .padding(.bottom, 20)
 
-                Button("Çıkış yap") {
-                    onDismiss()
+                Text("Hoşgeldin, \(userName)")
+                    .font(.title2)
+                    .foregroundColor(.white)
+                    .fontWeight(.bold)
+                    .padding(.bottom, 50)
+
+                Button(action: {
+                    withAnimation {
+                        onDismiss()
+                    }
+                }) {
+                    Text("Çıkış Yap")
+                        .font(.title3)
+                        .fontWeight(.semibold)
+                        .foregroundColor(.white)
+                        .frame(width: 150, height: 55)
+                        .background(Color.orange)
+                        .cornerRadius(12)
+                        .shadow(radius: 10)
+                        .padding(.horizontal, 20)
                 }
-                .padding()
-                .background(Color.blue)
-                .foregroundColor(.white)
-                .cornerRadius(10)
+
+                Spacer()
+                Spacer()
             }
+            .padding(.top, 100)
         }
         .navigationBarBackButtonHidden(true)
-        .statusBarHidden()
+        .statusBarHidden(true)
     }
 }
 

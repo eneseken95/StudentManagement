@@ -87,8 +87,42 @@ const getStudentLessons = (req, res) => {
     getLessons(req, res, 'student');
 };
 
+const updateElectiveLesson = (req, res) => {
+    const { userName, lesson, isMandatory } = req.body;
+
+    if (!userName || !lesson || isMandatory === undefined) {
+        return res.status(400).send({
+            error: true,
+            message: "Please provide userName, lesson, and isMandatory values"
+        });
+    }
+
+    userService.updateLesson(userName, lesson, isMandatory, (error, results) => {
+        if (error) {
+            return res.status(500).send({
+                error: true,
+                message: "Database error while updating lesson"
+            });
+        }
+
+        if (results.affectedRows === 0) {
+            return res.status(404).send({
+                error: true,
+                message: "No lesson found for the given student"
+            });
+        }
+
+        return res.json({
+            error: false,
+            message: "Lesson updated successfully"
+        });
+    });
+};
+
+
 module.exports = {
     login,
     getTeacherLessons,
-    getStudentLessons
+    getStudentLessons,
+    updateElectiveLesson
 };
