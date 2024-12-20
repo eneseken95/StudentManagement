@@ -7,3 +7,7 @@
 #### My Medium article about my BYS app ✏️ https://medium.com/@eneseken85/student-management-system-423d9b1c4cc7
 ##### İcon Resources: https://www.freepik.com
 This project is licensed under the Apache License 2.0. Copyright © 2024, Enes Eken.
+### Application pages
+<img src="https://github.com/eneseken95/Information_Management_System/blob/main/Screenshoots.png" alt="Screenshoots" width="550" height="1000" />
+
+
